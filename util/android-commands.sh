@@ -74,7 +74,7 @@ snapshot () {
     echo "running snapshot"
     adb install -g "$apk"
     probe='/sdcard/pkg.probe'
-    command="'yes | pkg install rust binutils openssl -y; touch $probe'"
+    command="'yes | pkg install cargo rust binutils openssl -y; touch $probe'"
     run_termux_command "$command" "$probe"
     echo "snapshot complete"
     adb shell input text "exit" && hit_enter && hit_enter
