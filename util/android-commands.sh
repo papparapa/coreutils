@@ -109,7 +109,7 @@ sync () {
 
 build () {
     probe='/sdcard/build.probe'
-    command="'cd ~/coreutils && cargo build --features feat_os_unix_android 2>/sdcard/build.log; echo \$? >$probe'"
+    command="'cd ~/coreutils && cargo build -j 1 --features feat_os_unix_android 2>/sdcard/build.log; echo \$? >$probe'"
     echo "running build"
     run_termux_command "$command" "$probe"
     return_code=$?
@@ -121,7 +121,7 @@ build () {
 tests () {
     probe='/sdcard/tests.probe'
     export RUST_BACKTRACE=1
-    command="'cd ~/coreutils && timeout --preserve-status --verbose -k 1m 60m cargo test --features feat_os_unix_android --no-fail-fast >/sdcard/tests.log 2>&1; echo \$? >$probe'"
+    command="'cd ~/coreutils && timeout --preserve-status --verbose -k 1m 60m cargo test --features feat_os_unix_android --no-fail-fast --test-threads=1 >/sdcard/tests.log 2>&1; echo \$? >$probe'"
     run_termux_command "$command" "$probe"
     return_code=$?
     adb pull /sdcard/tests.log .
